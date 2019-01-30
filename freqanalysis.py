@@ -1,7 +1,7 @@
 import string
 
 #to read input from a file
-f=open("sample", "r")
+f=open("sample.txt", "r")
 if f.mode == 'r':
     contents = f.read()
 print(contents.upper())
@@ -56,7 +56,10 @@ def encrypt(text,s):
     return result
 
 ciphertext = encrypt(plaintext, 3)
-print(ciphertext)
+cip=open("ciphertext.txt","w")
+cip.write(ciphertext)
+print(cip)
+print()
 
 def newfreqdist(ciphertext):
     letterfreq2 = {}
@@ -91,6 +94,7 @@ def newfreqdist(ciphertext):
             if x == alphabet[25]: z1+=1
         else:
             otherchars+=1
+    
     length1 = lengthplain - otherchars
     letterfreq2["A"] = a1/length1
     letterfreq2["B"] = b1/length1
@@ -123,6 +127,62 @@ def newfreqdist(ciphertext):
 
 letterfreq2 = newfreqdist(ciphertext)
 
+print("The frequencies of the letters in the ciphertext are:\n",letterfreq2)
+print()
+
+print("The frequencies of most commonly occuring letters:\n",letterfreq1)
+print()
+
+"""sum=0
+for i in letterfreq2:
+    sum=sum+letterfreq2[i]
+
+print(sum)
+"""
+# class InexactFloat(float):
+#     def __eq__(self, other):
+#         try:
+#             return abs(self.real - other) / (0.5 * (abs(self.real) + abs(other))) < 0.1
+#         except ZeroDivisionError:
+#             # Could do another inexact comparison here, this is just an example:
+#             return self.real == other
+
+#     def __ne__(self, other):
+#         return not self.__eq__(other)
+
+
+
+listletters1=list(letterfreq1.keys()) #list containing the alphabets
+
+listcipher=list(letterfreq2.keys()) #list containing the letters of the cipher text
+
+#print(listfreq1,type(listfreq1))
+listfreq2=list(letterfreq2.values()) #list containing cipher letter frequencies
+
 print(letterfreq2)
 
-print(letterfreq1)
+print()
+print(listfreq2)
+
+sorted_list=sorted(listfreq2,reverse=True)
+
+print()
+print(sorted_list)
+
+guessed = {}
+
+for i in sorted_list:
+    count=0
+    for j in letterfreq2:
+        if(i == letterfreq2[j]):
+            guessed[listcipher[count]]=listletters1[sorted_list.index(i)]
+        count=count+1
+
+# test1=sorted(guessed.keys())
+# test2=sorted(guessed.values())
+# print(test1)
+# print()
+# print(test2)
+
+print()    
+print("The possible substitutions are:\n",guessed)
